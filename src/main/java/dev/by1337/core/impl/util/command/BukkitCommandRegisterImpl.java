@@ -3,7 +3,7 @@ package dev.by1337.core.impl.util.command;
 import dev.by1337.core.util.command.BukkitCommandRegister;
 import org.bukkit.Bukkit;
 import org.bukkit.command.defaults.BukkitCommand;
-import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.v1_17_R1.CraftServer;
 
 public class BukkitCommandRegisterImpl implements BukkitCommandRegister {
     @Override

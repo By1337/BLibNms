@@ -3,7 +3,7 @@ package dev.by1337.core.impl.util.inventory;
 import dev.by1337.core.impl.util.NBTUtil;
 import dev.by1337.core.util.inventory.ItemStackSerializer;
 import net.minecraft.nbt.CompoundTag;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemStackSerializerImpl implements ItemStackSerializer {
@@ -33,7 +33,7 @@ public class ItemStackSerializerImpl implements ItemStackSerializer {
 
     private net.minecraft.world.item.ItemStack asNMSCopy(ItemStack itemStack) {
         if (itemStack instanceof CraftItemStack c) {
-            return c.getHandle();
+            return c.handle;
         }
         return CraftItemStack.asNMSCopy(itemStack);
     }

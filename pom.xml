@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>dev.by1337.core.nms</groupId>
     <artifactId>BDevCoreNms</artifactId>
-    <version>1.0</version>
+    <version>1.17.1</version>
 
     <properties>
         <java.version>16</java.version>
@@ -23,8 +23,8 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <id>by1337-repo</id>
-            <url>https://repo.by1337.space/repository/maven-releases/</url>
+            <id>bytecode.space</id>
+            <url>https://repo.bytecode.space/repository/maven-public/</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -32,22 +32,18 @@
         <defaultGoal>clean install</defaultGoal>
         <plugins>
             <plugin>
-                <groupId>org.by1337.bnms</groupId>
-                <artifactId>bnms-plugin</artifactId>
-                <version>1.3.1</version>
-                <configuration>
-                    <version>1.16.5</version>
-                </configuration>
+                <groupId>ca.bkaw</groupId>
+                <artifactId>paper-nms-maven-plugin</artifactId>
+                <version>1.4.10</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <phase>process-classes</phase>
                         <goals>
                             <goal>remap</goal>
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
+            </plugin>            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
@@ -116,15 +112,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.by1337.nms</groupId>
+            <groupId>ca.bkaw</groupId>
             <artifactId>paper-nms</artifactId>
-            <version>1.16.5</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

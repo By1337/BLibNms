@@ -7,8 +7,8 @@ import net.kyori.adventure.text.Component;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
 import net.minecraft.server.level.ServerPlayer;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
-import org.bukkit.craftbukkit.inventory.*;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_17_R1.inventory.*;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -28,17 +28,17 @@ public class InventoryUtilImpl implements InventoryUtil {
             if (humanEntity instanceof CraftPlayer craftPlayer) {
                 ServerPlayer entityPlayer = craftPlayer.getHandle();
                 ClientboundOpenScreenPacket packet = new ClientboundOpenScreenPacket(
-                        entityPlayer.activeContainer.windowId, entityPlayer.activeContainer.getType(), PaperAdventure.asVanilla(newTitle)
+                        entityPlayer.containerMenu.containerId, entityPlayer.containerMenu.getType(), PaperAdventure.asVanilla(newTitle)
                 );
-                entityPlayer.playerConnection.sendPacket(packet);
-                entityPlayer.updateInventory(entityPlayer.activeContainer);
+                entityPlayer.networkManager.send(packet);
+                craftPlayer.updateInventory();
             }
         }
     }
 
     @Override
     public void flushInv(Player player) {
-        ((CraftPlayer) player).getHandle().activeContainer.broadcastChanges();
+        ((CraftPlayer) player).getHandle().containerMenu.broadcastChanges();
     }
 
     @Override
@@ -49,46 +49,45 @@ public class InventoryUtilImpl implements InventoryUtil {
     @Override
     public void enableAutoFlush(Player player) {
         CraftPlayer craftPlayer = (CraftPlayer) player;
-        CONTAINER_UPDATE_DELAY.accept(craftPlayer.getHandle(), craftPlayer.getHandle().world.paperConfig.containerUpdateTickRate);
+        CONTAINER_UPDATE_DELAY.accept(craftPlayer.getHandle(), craftPlayer.getHandle().level.paperConfig.containerUpdateTickRate);
     }
 
     @Override
     public void setItemStackWithoutCopy(Inventory to, ItemStack who, int index) {
         net.minecraft.world.item.ItemStack nms;
         if (who instanceof CraftItemStack craftItemStack) {
-            nms = Objects.requireNonNullElse(craftItemStack.getHandle(), net.minecraft.world.item.ItemStack.EMPTY);
+            nms = Objects.requireNonNullElse(craftItemStack.handle, net.minecraft.world.item.ItemStack.EMPTY);
         } else {
             nms = CraftItemStack.asNMSCopy(who);
         }
         if (to instanceof CraftResultInventory cri) {
             //from CraftResultInventory#setItem
-            if (index < cri.getIngredientsInventory().getSize()) {
+            if (index < cri.getIngredientsInventory().getContainerSize()) {
                 cri.getIngredientsInventory().setItem(index, nms);
             } else {
-                cri.getResultInventory().setItem(index - cri.getIngredientsInventory().getSize(), nms);
+                cri.getResultInventory().setItem(index - cri.getIngredientsInventory().getContainerSize(), nms);
             }
         } else if (to instanceof CraftInventoryCrafting cic) {
             //from CraftInventoryCrafting#setItem
-            if (index < cic.getResultInventory().getSize()) {
+            if (index < cic.getResultInventory().getContainerSize()) {
                 cic.getResultInventory().setItem(index, nms);
             } else {
-                cic.getMatrixInventory().setItem(index - cic.getResultInventory().getSize(), nms);
+                cic.getMatrixInventory().setItem(index - cic.getResultInventory().getContainerSize(), nms);
             }
         } else if (to instanceof CraftInventoryPlayer cip) {
             //from CraftInventoryPlayer#setItem
             cip.getInventory().setItem(index, nms);
             if (cip.getHolder() != null) {
                 ServerPlayer player = ((CraftPlayer) cip.getHolder()).getHandle();
-                if (player.playerConnection != null) {
-                    if (index < net.minecraft.world.entity.player.Inventory.getHotbarSize()) {
-                        index += 36;
-                    } else if (index > 39) {
-                        index += 5;
-                    } else if (index > 35) {
-                        index = 8 - (index - 36);
-                    }
-                    player.playerConnection.sendPacket(new ClientboundContainerSetSlotPacket(player.defaultContainer.windowId, index, nms));
+                if (index < net.minecraft.world.entity.player.Inventory.getSelectionSize()) {
+                    index += 36;
+                } else if (index > 39) {
+                    index += 5;
+                } else if (index > 35) {
+                    index = 8 - (index - 36);
                 }
+
+                player.connection.send(new ClientboundContainerSetSlotPacket(player.inventoryMenu.containerId, player.inventoryMenu.incrementStateId(), index, nms));
             }
         } else if (to instanceof CraftInventory ci) {
             ci.getInventory().setItem(index, nms);
