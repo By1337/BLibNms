@@ -30,8 +30,6 @@ public class NMSUtil {
         }
     }
     public static net.minecraft.world.item.ItemStack asNMSItemStack(ItemStack itemStack) {
-        Player pl;
-        pl.sendRawMessage();
         if (itemStack instanceof CraftItemStack c) {
             return c.getHandle();
         }
