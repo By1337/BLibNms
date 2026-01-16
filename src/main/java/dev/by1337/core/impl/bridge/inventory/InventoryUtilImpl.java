@@ -1,6 +1,6 @@
-package dev.by1337.core.impl.util.inventory;
+package dev.by1337.core.impl.bridge.inventory;
 
-import dev.by1337.core.util.inventory.InventoryUtil;
+import dev.by1337.core.bridge.inventory.InventoryUtil;
 import dev.by1337.core.util.reflect.LambdaMetafactoryUtil;
 import io.papermc.paper.adventure.PaperAdventure;
 import net.kyori.adventure.text.Component;

@@ -1,8 +1,9 @@
-package dev.by1337.core.impl.util.world;
+package dev.by1337.core.impl.bridge.world;
 
-import dev.by1337.core.impl.util.NBTUtil;
-import dev.by1337.core.util.world.BlockEntityUtil;
-import net.minecraft.nbt.NbtIo;
+import dev.by1337.core.bridge.world.BlockEntityUtil;
+import dev.by1337.core.impl.bridge.NMSUtil;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -10,21 +11,22 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-
 public class BlockEntityUtilImpl implements BlockEntityUtil {
+
     @Override
     public void setBlock(Location location, int id, byte @Nullable [] bytes, boolean applyPhysics) {
         CraftBlock cb = (CraftBlock) location.getBlock();
-        if (cb.setTypeAndData(Block.REGISTRY_ID.fromId(id), applyPhysics)) {
-            BlockEntity entity = cb.getCraftWorld().getHandle().getTileEntity(cb.getPosition());
-            if (entity != null && bytes != null) {
-                entity.load(cb.getNMS(), NBTUtil.fromByteArray(bytes));
-                if (!entity.getPosition().equals(cb.getPosition())) {
-                    entity.setPosition(cb.getPosition());
+        BlockPos pos = cb.getPosition();
+        ServerLevel level = cb.getCraftWorld().getHandle();
+        var state = Block.REGISTRY_ID.fromId(id);
+        boolean ignored = cb.setTypeAndData(state, applyPhysics);
+        if (bytes != null && state == cb.getNMS()) {
+            BlockEntity entity = level.getTileEntity(pos, false);
+            if (entity != null) {
+                entity.load(cb.getNMS(), NMSUtil.fromByteArray(bytes));
+                //CraftBlockEntityState#copyData через load грузит не создавая новый BlockEntity
+                if (!pos.equals(entity.getPosition())) {
+                    entity.setPosition(pos);
                 }
             }
         }
@@ -43,7 +45,7 @@ public class BlockEntityUtilImpl implements BlockEntityUtil {
         if (entity == null) return null;
         net.minecraft.nbt.CompoundTag tag = new net.minecraft.nbt.CompoundTag();
         entity.save(tag);
-        return NBTUtil.toByteArray(tag);
+        return NMSUtil.toByteArray(tag);
     }
 
     @Override

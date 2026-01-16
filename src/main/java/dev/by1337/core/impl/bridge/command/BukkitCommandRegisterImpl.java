@@ -1,6 +1,6 @@
-package dev.by1337.core.impl.util.command;
+package dev.by1337.core.impl.bridge.command;
 
-import dev.by1337.core.util.command.BukkitCommandRegister;
+import dev.by1337.core.bridge.command.BukkitCommandRegister;
 import org.bukkit.Bukkit;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.craftbukkit.CraftServer;
