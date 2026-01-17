@@ -8,7 +8,7 @@ import net.minecraft.world.Clearable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_19_R3.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_20_R1.block.CraftBlock;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockEntityUtilImpl implements BlockEntityUtil {

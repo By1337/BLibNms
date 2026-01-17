@@ -9,8 +9,8 @@ import dev.by1337.core.impl.bridge.world.BlockEntityUtilImpl;
 import net.minecraft.core.registries.BuiltInRegistries;
 import org.bukkit.Particle;
 import org.bukkit.Registry;
-import org.bukkit.craftbukkit.v1_19_R3.CraftParticle;
-import org.bukkit.craftbukkit.v1_19_R3.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.v1_20_R1.CraftParticle;
+import org.bukkit.craftbukkit.v1_20_R1.util.CraftNamespacedKey;
 import org.bukkit.potion.PotionEffectType;
 
 public class BridgeBootstrapper {
@@ -25,7 +25,6 @@ public class BridgeBootstrapper {
     }
 
     private static void bootRegistryBridge() {
-
         ((LegacyRegistryBridge.RegistryImpl<Particle>) LegacyRegistryBridge.PARTICLE_TYPE).importData(
                 BuiltInRegistries.PARTICLE_TYPE.iterator(),
                 CraftParticle::toBukkit,
