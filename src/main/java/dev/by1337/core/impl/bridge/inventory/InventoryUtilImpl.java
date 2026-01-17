@@ -7,8 +7,8 @@ import net.kyori.adventure.text.Component;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
 import net.minecraft.server.level.ServerPlayer;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_18_R2.inventory.*;
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R3.inventory.*;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -30,7 +30,7 @@ public class InventoryUtilImpl implements InventoryUtil {
                 ClientboundOpenScreenPacket packet = new ClientboundOpenScreenPacket(
                         entityPlayer.containerMenu.containerId, entityPlayer.containerMenu.getType(), PaperAdventure.asVanilla(newTitle)
                 );
-                entityPlayer.networkManager.send(packet);
+                entityPlayer.connection.send(packet);
                 craftPlayer.updateInventory();
             }
         }
@@ -49,7 +49,7 @@ public class InventoryUtilImpl implements InventoryUtil {
     @Override
     public void enableAutoFlush(Player player) {
         CraftPlayer craftPlayer = (CraftPlayer) player;
-        CONTAINER_UPDATE_DELAY.accept(craftPlayer.getHandle(), craftPlayer.getHandle().level.paperConfig.containerUpdateTickRate);
+        CONTAINER_UPDATE_DELAY.accept(craftPlayer.getHandle(), craftPlayer.getHandle().level.paperConfig().tickRates.containerUpdate);
     }
 
     @Override

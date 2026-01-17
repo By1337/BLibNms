@@ -6,10 +6,11 @@ import dev.by1337.core.impl.bridge.inventory.InventoryUtilImpl;
 import dev.by1337.core.impl.bridge.inventory.ItemStackSerializerImpl;
 import dev.by1337.core.impl.bridge.nbt.NbtBridgeImpl;
 import dev.by1337.core.impl.bridge.world.BlockEntityUtilImpl;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.bukkit.Particle;
-import org.bukkit.craftbukkit.v1_18_R2.CraftParticle;
-import org.bukkit.craftbukkit.v1_18_R2.potion.CraftPotionEffectType;
-import org.bukkit.craftbukkit.v1_18_R2.util.CraftNamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.craftbukkit.v1_19_R3.CraftParticle;
+import org.bukkit.craftbukkit.v1_19_R3.util.CraftNamespacedKey;
 import org.bukkit.potion.PotionEffectType;
 
 public class BridgeBootstrapper {
@@ -24,15 +25,16 @@ public class BridgeBootstrapper {
     }
 
     private static void bootRegistryBridge() {
+
         ((LegacyRegistryBridge.RegistryImpl<Particle>) LegacyRegistryBridge.PARTICLE_TYPE).importData(
-                net.minecraft.core.Registry.PARTICLE_TYPE.iterator(),
+                BuiltInRegistries.PARTICLE_TYPE.iterator(),
                 CraftParticle::toBukkit,
-                particleType -> CraftNamespacedKey.fromMinecraft(net.minecraft.core.Registry.PARTICLE_TYPE.getKey(particleType))
+                particleType -> CraftNamespacedKey.fromMinecraft(BuiltInRegistries.PARTICLE_TYPE.getKey(particleType))
         );
         ((LegacyRegistryBridge.RegistryImpl<PotionEffectType>) LegacyRegistryBridge.MOB_EFFECT).importData(
-                net.minecraft.core.Registry.MOB_EFFECT.iterator(),
-                CraftPotionEffectType::new,
-                mobEffect -> CraftNamespacedKey.fromMinecraft(net.minecraft.core.Registry.MOB_EFFECT.getKey(mobEffect)));
+                Registry.POTION_EFFECT_TYPE.iterator(),
+                v -> v,
+                PotionEffectType::getKey);
 
     }
 }

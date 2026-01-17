@@ -8,7 +8,7 @@ import net.minecraft.world.Clearable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_18_R2.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_19_R3.block.CraftBlock;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockEntityUtilImpl implements BlockEntityUtil {
@@ -19,7 +19,8 @@ public class BlockEntityUtilImpl implements BlockEntityUtil {
         BlockPos pos = cb.getPosition();
         ServerLevel level = cb.getCraftWorld().getHandle();
         var state = Block.stateById(id);
-        boolean ignored = CraftBlock.setTypeAndData(cb.getHandle(), pos, cb.getNMS(), state, applyPhysics);;
+        boolean ignored = CraftBlock.setTypeAndData(cb.getHandle(), pos, cb.getNMS(), state, applyPhysics);
+        ;
         if (bytes != null && state == cb.getNMS()) {
             BlockEntity entity = level.getBlockEntity(pos, false);
             if (entity != null) {
