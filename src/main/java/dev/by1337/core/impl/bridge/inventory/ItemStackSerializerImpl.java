@@ -36,7 +36,7 @@ public class ItemStackSerializerImpl implements ItemStackSerializer {
     @Override
     public ItemStack fromSNbt(String snbt) {
         try {
-            return NMSUtil.decodeItem(TagParser.parseTag(snbt), null);
+            return NMSUtil.decodeItem(TagParser.parseCompoundFully(snbt), null);
         } catch (CommandSyntaxException e) {
             throw new RuntimeException(e);
         }

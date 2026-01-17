@@ -20,7 +20,7 @@ public class BlockEntityUtilImpl implements BlockEntityUtil {
         BlockPos pos = cb.getPosition();
         ServerLevel level = cb.getCraftWorld().getHandle();
         var state = Block.stateById(id);
-        boolean ignored = CraftBlock.setTypeAndData(cb.getHandle(), pos, cb.getNMS(), state, applyPhysics);
+        boolean ignored = CraftBlock.setBlockState(cb.getHandle(), pos, cb.getNMS(), state, applyPhysics);
         if (bytes != null && state == cb.getNMS()) {
             BlockEntity entity = level.getBlockEntity(pos, false);
             if (entity != null) {
@@ -50,6 +50,6 @@ public class BlockEntityUtilImpl implements BlockEntityUtil {
     public void tryClear(Location location) {
         CraftBlock cb = (CraftBlock) location.getBlock();
         BlockEntity entity = cb.getCraftWorld().getHandle().getBlockEntity(cb.getPosition());
-        Clearable.tryClear(entity);
+        if (entity instanceof Clearable clearable) clearable.clearContent();
     }
 }

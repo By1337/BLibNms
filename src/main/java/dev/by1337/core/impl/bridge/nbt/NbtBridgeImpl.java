@@ -91,13 +91,13 @@ public class NbtBridgeImpl implements NbtBridge {
 
         return switch (nms.getId()) {
             case TAG_END -> BinaryNbt.EndTag.INSTANCE;
-            case TAG_BYTE -> new BinaryNbt.ByteTag(((ByteTag) nms).getAsByte());
-            case TAG_SHORT -> new BinaryNbt.ShortTag(((ShortTag) nms).getAsShort());
-            case TAG_INT -> new BinaryNbt.IntTag(((IntTag) nms).getAsInt());
-            case TAG_LONG -> new BinaryNbt.LongTag(((LongTag) nms).getAsLong());
-            case TAG_FLOAT -> new BinaryNbt.FloatTag(((FloatTag) nms).getAsFloat());
-            case TAG_DOUBLE -> new BinaryNbt.DoubleTag(((DoubleTag) nms).getAsDouble());
-            case TAG_STRING -> new BinaryNbt.StringTag(nms.getAsString());
+            case TAG_BYTE -> new BinaryNbt.ByteTag(((ByteTag) nms).byteValue());
+            case TAG_SHORT -> new BinaryNbt.ShortTag(((ShortTag) nms).shortValue());
+            case TAG_INT -> new BinaryNbt.IntTag(((IntTag) nms).intValue());
+            case TAG_LONG -> new BinaryNbt.LongTag(((LongTag) nms).longValue());
+            case TAG_FLOAT -> new BinaryNbt.FloatTag(((FloatTag) nms).floatValue());
+            case TAG_DOUBLE -> new BinaryNbt.DoubleTag(((DoubleTag) nms).doubleValue());
+            case TAG_STRING -> new BinaryNbt.StringTag(((StringTag)nms).value());
             case TAG_BYTE_ARRAY -> {
                 byte[] v = ((ByteArrayTag) nms).getAsByteArray();
                 yield new BinaryNbt.ByteArrayTag(v);
@@ -121,7 +121,7 @@ public class NbtBridgeImpl implements NbtBridge {
             case TAG_COMPOUND -> {
                 CompoundTag compound = (CompoundTag) nms;
                 BinaryNbt.CompoundTag out = new BinaryNbt.CompoundTag();
-                for (String key : compound.getAllKeys()) {
+                for (String key : compound.keySet()) {
                     out.put(key, ofNMS(compound.get(key)));
                 }
                 yield out;
