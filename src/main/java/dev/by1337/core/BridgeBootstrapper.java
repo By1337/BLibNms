@@ -1,10 +1,11 @@
 package dev.by1337.core;
 
-import dev.by1337.core.impl.util.command.BukkitCommandRegisterImpl;
-import dev.by1337.core.impl.util.inventory.InventoryUtilImpl;
-import dev.by1337.core.impl.util.inventory.ItemStackSerializerImpl;
-import dev.by1337.core.impl.util.world.BlockEntityUtilImpl;
-import dev.by1337.core.util.registry.LegacyRegistryBridge;
+import dev.by1337.core.bridge.registry.LegacyRegistryBridge;
+import dev.by1337.core.impl.bridge.command.BukkitCommandRegisterImpl;
+import dev.by1337.core.impl.bridge.inventory.InventoryUtilImpl;
+import dev.by1337.core.impl.bridge.inventory.ItemStackSerializerImpl;
+import dev.by1337.core.impl.bridge.nbt.NbtBridgeImpl;
+import dev.by1337.core.impl.bridge.world.BlockEntityUtilImpl;
 import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_17_R1.CraftParticle;
 import org.bukkit.craftbukkit.v1_17_R1.potion.CraftPotionEffectType;
@@ -19,6 +20,7 @@ public class BridgeBootstrapper {
         BCore.inventoryUtil = new InventoryUtilImpl();
         BCore.blockEntityUtil = new BlockEntityUtilImpl();
         BCore.itemStackSerializer = new ItemStackSerializerImpl();
+        BCore.nbtBridge = new NbtBridgeImpl();
     }
 
     private static void bootRegistryBridge() {

@@ -1,7 +1,9 @@
-package dev.by1337.core.impl.util.world;
+package dev.by1337.core.impl.bridge.world;
 
-import dev.by1337.core.impl.util.NBTUtil;
-import dev.by1337.core.util.world.BlockEntityUtil;
+import dev.by1337.core.bridge.world.BlockEntityUtil;
+import dev.by1337.core.impl.bridge.NMSUtil;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -10,13 +12,19 @@ import org.bukkit.craftbukkit.v1_17_R1.block.CraftBlock;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockEntityUtilImpl implements BlockEntityUtil {
+
     @Override
     public void setBlock(Location location, int id, byte @Nullable [] bytes, boolean applyPhysics) {
         CraftBlock cb = (CraftBlock) location.getBlock();
-        if (cb.setTypeAndData(Block.BLOCK_STATE_REGISTRY.byId(id), applyPhysics)) {
-            BlockEntity entity = cb.getCraftWorld().getHandle().getBlockEntity(cb.getPosition());
-            if (entity != null && bytes != null) {
-                entity.load(NBTUtil.fromByteArray(bytes));
+        BlockPos pos = cb.getPosition();
+        ServerLevel level = cb.getCraftWorld().getHandle();
+        var state = Block.stateById(id);
+        boolean ignored = cb.setTypeAndData(state, applyPhysics);
+        if (bytes != null && state == cb.getNMS()) {
+            BlockEntity entity = level.getTileEntity(pos, false);
+            if (entity != null) {
+                //CraftBlockEntityState#copyData через load грузит не создавая новый BlockEntity
+                entity.load(NMSUtil.fromByteArray(bytes));
             }
         }
     }
@@ -34,7 +42,7 @@ public class BlockEntityUtilImpl implements BlockEntityUtil {
         if (entity == null) return null;
         net.minecraft.nbt.CompoundTag tag = new net.minecraft.nbt.CompoundTag();
         entity.save(tag);
-        return NBTUtil.toByteArray(tag);
+        return NMSUtil.toByteArray(tag);
     }
 
     @Override
