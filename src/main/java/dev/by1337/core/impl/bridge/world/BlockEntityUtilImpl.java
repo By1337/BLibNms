@@ -4,15 +4,21 @@ import dev.by1337.core.bridge.world.BlockEntityUtil;
 import dev.by1337.core.impl.bridge.NMSUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.TagValueInput;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.craftbukkit.block.CraftBlockEntityState;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BlockEntityUtilImpl implements BlockEntityUtil {
+
+    private static final Logger log = LoggerFactory.getLogger("BLib#BlockEntity");
 
     @Override
     public void setBlock(Location location, int id, byte @Nullable [] bytes, boolean applyPhysics) {
@@ -22,10 +28,12 @@ public class BlockEntityUtilImpl implements BlockEntityUtil {
         var state = Block.stateById(id);
         boolean ignored = CraftBlock.setBlockState(cb.getHandle(), pos, cb.getNMS(), state, applyPhysics);
         if (bytes != null && state == cb.getNMS()) {
-            BlockEntity entity = level.getBlockEntity(pos, false);
+            BlockEntity entity = level.getBlockEntity(pos);
             if (entity != null) {
                 //CraftBlockEntityState#copyData через loadWithComponents грузит не создавая новый BlockEntity
-                entity.loadWithComponents(NMSUtil.fromByteArray(bytes), level.registryAccess());
+                try (ProblemReporter.ScopedCollector problemReporter = new ProblemReporter.ScopedCollector(() -> "BlockEntityUtilImpl@" + pos.toShortString(), log)) {
+                    entity.loadWithComponents(TagValueInput.create(problemReporter, level.registryAccess(), NMSUtil.fromByteArray(bytes)));
+                }
             }
         }
     }
