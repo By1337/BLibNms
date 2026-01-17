@@ -8,7 +8,8 @@ import net.minecraft.world.Clearable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_20_R3.block.CraftBlock;
+import org.bukkit.craftbukkit.block.CraftBlock;
+import org.bukkit.craftbukkit.block.CraftBlockEntityState;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockEntityUtilImpl implements BlockEntityUtil {
@@ -20,12 +21,11 @@ public class BlockEntityUtilImpl implements BlockEntityUtil {
         ServerLevel level = cb.getCraftWorld().getHandle();
         var state = Block.stateById(id);
         boolean ignored = CraftBlock.setTypeAndData(cb.getHandle(), pos, cb.getNMS(), state, applyPhysics);
-        ;
         if (bytes != null && state == cb.getNMS()) {
             BlockEntity entity = level.getBlockEntity(pos, false);
             if (entity != null) {
-                //CraftBlockEntityState#copyData через load грузит не создавая новый BlockEntity
-                entity.load(NMSUtil.fromByteArray(bytes));
+                //CraftBlockEntityState#copyData через loadWithComponents грузит не создавая новый BlockEntity
+                entity.loadWithComponents(NMSUtil.fromByteArray(bytes), level.registryAccess());
             }
         }
     }
@@ -39,9 +39,10 @@ public class BlockEntityUtilImpl implements BlockEntityUtil {
     }
 
     private byte @Nullable [] getBlockEntity(CraftBlock cb) {
+        var level = cb.getCraftWorld().getHandle();
         BlockEntity entity = cb.getCraftWorld().getHandle().getBlockEntity(cb.getPosition());
         if (entity == null) return null;
-        net.minecraft.nbt.CompoundTag tag = entity.saveWithFullMetadata();
+        net.minecraft.nbt.CompoundTag tag = entity.saveWithFullMetadata(level.registryAccess());
         return NMSUtil.toByteArray(tag);
     }
 

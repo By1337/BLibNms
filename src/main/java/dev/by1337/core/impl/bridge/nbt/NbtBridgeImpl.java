@@ -5,8 +5,8 @@ import dev.by1337.core.impl.bridge.NMSUtil;
 import dev.by1337.core.util.nbt.BinaryNbt;
 import net.minecraft.nbt.*;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_20_R3.persistence.CraftPersistentDataContainer;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.persistence.CraftPersistentDataContainer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.Nullable;
@@ -41,19 +41,14 @@ public class NbtBridgeImpl implements NbtBridge {
     }
 
     @Override
-    public BinaryNbt.CompoundTag of(ItemStack itemStack, @Nullable World ignored) {
-        var item = NMSUtil.asNMSItemStack(itemStack);
-        CompoundTag tag = new CompoundTag();
-        item.save(tag);
-        return (BinaryNbt.CompoundTag) ofNMS(tag);
+    public BinaryNbt.CompoundTag of(ItemStack itemStack, @Nullable World world) {
+        return (BinaryNbt.CompoundTag) ofNMS(NMSUtil.encodeItem(itemStack, world));
     }
 
     @Override
-    public ItemStack create(BinaryNbt.CompoundTag tag, @Nullable World ignored) {
+    public ItemStack create(BinaryNbt.CompoundTag tag, @Nullable World world) {
         CompoundTag nms = (CompoundTag) toNMS(tag);
-        return CraftItemStack.asCraftMirror(
-                net.minecraft.world.item.ItemStack.of(nms)
-        );
+        return NMSUtil.decodeItem(nms, world);
     }
 
     @Override
