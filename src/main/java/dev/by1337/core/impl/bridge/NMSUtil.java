@@ -1,7 +1,8 @@
 package dev.by1337.core.impl.bridge;
 
+import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
-import org.bukkit.craftbukkit.v1_20_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.ByteArrayInputStream;
@@ -22,7 +23,7 @@ public class NMSUtil {
 
     public static net.minecraft.nbt.CompoundTag fromByteArray(byte[] bytes) {
         try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes)) {
-            return NbtIo.readCompressed(bis);
+            return NbtIo.readCompressed(bis, NbtAccounter.unlimitedHeap());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
