@@ -6,7 +6,7 @@ import dev.by1337.core.impl.bridge.NMSUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 

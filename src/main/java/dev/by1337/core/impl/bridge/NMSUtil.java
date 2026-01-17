@@ -1,7 +1,7 @@
 package dev.by1337.core.impl.bridge;
 
 import net.minecraft.nbt.NbtIo;
-import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.ByteArrayInputStream;

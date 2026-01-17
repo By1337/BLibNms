@@ -7,9 +7,9 @@ import dev.by1337.core.impl.bridge.inventory.ItemStackSerializerImpl;
 import dev.by1337.core.impl.bridge.nbt.NbtBridgeImpl;
 import dev.by1337.core.impl.bridge.world.BlockEntityUtilImpl;
 import org.bukkit.Particle;
-import org.bukkit.craftbukkit.v1_17_R1.CraftParticle;
-import org.bukkit.craftbukkit.v1_17_R1.potion.CraftPotionEffectType;
-import org.bukkit.craftbukkit.v1_17_R1.util.CraftNamespacedKey;
+import org.bukkit.craftbukkit.v1_18_R2.CraftParticle;
+import org.bukkit.craftbukkit.v1_18_R2.potion.CraftPotionEffectType;
+import org.bukkit.craftbukkit.v1_18_R2.util.CraftNamespacedKey;
 import org.bukkit.potion.PotionEffectType;
 
 public class BridgeBootstrapper {
