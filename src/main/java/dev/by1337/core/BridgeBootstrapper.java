@@ -6,11 +6,8 @@ import dev.by1337.core.impl.bridge.inventory.InventoryUtilImpl;
 import dev.by1337.core.impl.bridge.inventory.ItemStackSerializerImpl;
 import dev.by1337.core.impl.bridge.nbt.NbtBridgeImpl;
 import dev.by1337.core.impl.bridge.world.BlockEntityUtilImpl;
-import net.minecraft.core.registries.BuiltInRegistries;
 import org.bukkit.Particle;
 import org.bukkit.Registry;
-import org.bukkit.craftbukkit.v1_20_R1.CraftParticle;
-import org.bukkit.craftbukkit.v1_20_R1.util.CraftNamespacedKey;
 import org.bukkit.potion.PotionEffectType;
 
 public class BridgeBootstrapper {
@@ -26,9 +23,9 @@ public class BridgeBootstrapper {
 
     private static void bootRegistryBridge() {
         ((LegacyRegistryBridge.RegistryImpl<Particle>) LegacyRegistryBridge.PARTICLE_TYPE).importData(
-                BuiltInRegistries.PARTICLE_TYPE.iterator(),
-                CraftParticle::toBukkit,
-                particleType -> CraftNamespacedKey.fromMinecraft(BuiltInRegistries.PARTICLE_TYPE.getKey(particleType))
+                Registry.PARTICLE_TYPE.iterator(),
+                v -> v,
+                Particle::getKey
         );
         ((LegacyRegistryBridge.RegistryImpl<PotionEffectType>) LegacyRegistryBridge.MOB_EFFECT).importData(
                 Registry.POTION_EFFECT_TYPE.iterator(),
