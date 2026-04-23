@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>dev.by1337.core.nms</groupId>
     <artifactId>BLibNms</artifactId>
-    <version>1.4+1.21.5</version>
+    <version>1.5+1.21.5</version>
 
     <properties>
         <java.version>16</java.version>
@@ -113,7 +113,7 @@
         <dependency>
             <groupId>dev.by1337.core</groupId>
             <artifactId>BLibV2</artifactId>
-            <version>1.7</version>
+            <version>1.7.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
