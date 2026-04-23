@@ -1,6 +1,7 @@
 package dev.by1337.core;
 
 import dev.by1337.core.impl.bridge.command.BukkitCommandRegisterImpl;
+import dev.by1337.core.impl.bridge.entity.EntityWrapperImpl;
 import dev.by1337.core.impl.bridge.inventory.InventoryUtilImpl;
 import dev.by1337.core.impl.bridge.inventory.ItemStackSerializerImpl;
 import dev.by1337.core.impl.bridge.nbt.NbtBridgeImpl;
@@ -21,6 +22,7 @@ public class BridgeBootstrapper {
         BCore.blockEntityUtil = new BlockEntityUtilImpl();
         BCore.itemStackSerializer = new ItemStackSerializerImpl();
         BCore.nbtBridge = new NbtBridgeImpl();
+        BCore.entityWrapperMaker = EntityWrapperImpl::new;
     }
 
     private static void bootRegistryBridge() {
