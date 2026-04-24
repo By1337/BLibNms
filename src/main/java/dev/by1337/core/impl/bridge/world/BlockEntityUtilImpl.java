@@ -13,7 +13,6 @@ import net.minecraft.world.level.storage.TagValueInput;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.block.CraftBlock;
-import org.bukkit.craftbukkit.block.CraftBlockEntityState;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -32,8 +31,8 @@ public class BlockEntityUtilImpl implements BlockEntityUtil {
         BlockPos pos = cb.getPosition();
         ServerLevel level = cb.getCraftWorld().getHandle();
         var state = Block.stateById(id);
-        boolean ignored = CraftBlock.setBlockState(cb.getHandle(), pos, cb.getNMS(), state, applyPhysics);
-        if (bytes != null && state == cb.getNMS()) {
+        boolean ignored = CraftBlock.setBlockState(cb.getLevel(), pos, cb.getBlockState(), state, applyPhysics);
+        if (bytes != null && state == cb.getBlockState()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if (entity != null) {
                 //CraftBlockEntityState#copyData через loadWithComponents грузит не создавая новый BlockEntity
@@ -47,7 +46,7 @@ public class BlockEntityUtilImpl implements BlockEntityUtil {
     @Override
     public BlockInfo getBlock(Location location) {
         CraftBlock cb = (CraftBlock) location.getBlock();
-        int blockId = Block.BLOCK_STATE_REGISTRY.getId(cb.getNMS());
+        int blockId = Block.BLOCK_STATE_REGISTRY.getId(cb.getBlockState());
         byte[] entity = getBlockEntity(cb);
         return new BlockInfo(cb.getBlockData(), blockId, entity);
     }
