@@ -31,7 +31,7 @@ public class BlockEntityUtilImpl implements BlockEntityUtil {
         BlockPos pos = cb.getPosition();
         ServerLevel level = cb.getCraftWorld().getHandle();
         var state = Block.stateById(id);
-        boolean ignored = CraftBlock.setBlockState(cb.getLevel(), pos, cb.getBlockState(), state, applyPhysics);
+        boolean ignored = CraftBlock.setBlockState(cb.getLevel(), pos, state, applyPhysics);
         if (bytes != null && state == cb.getBlockState()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if (entity != null) {

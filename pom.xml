@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>dev.by1337.core.nms</groupId>
     <artifactId>BLibNms</artifactId>
-    <version>1.5+26.1.2</version>
+    <version>1.5+26.2</version>
 
     <properties>
         <java.version>16</java.version>
@@ -34,7 +34,7 @@
             <plugin>
                 <groupId>ca.bkaw</groupId>
                 <artifactId>paper-nms-maven-plugin</artifactId>
-                <version>1.4.11-SNAPSHOT</version>
+                <version>1.5</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>ca.bkaw</groupId>
             <artifactId>paper-nms</artifactId>
-            <version>26.1.2.build.19-alpha-SNAPSHOT</version>
+            <version>26.2.build.31-alpha</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
