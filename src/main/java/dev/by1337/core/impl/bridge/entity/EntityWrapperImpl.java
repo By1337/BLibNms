@@ -33,7 +33,7 @@ public class EntityWrapperImpl implements EntityWrapper {
         serverEntity = new ServerEntity(
                 level,
                 entity,
-                1,
+                net.minecraft.world.entity.UpdateInterval.periodic(1),
                 false,
                 NOP_SYNCHRONIZER,
                 Set.of()

@@ -78,7 +78,7 @@ public class BlockEntityUtilImpl implements BlockEntityUtil {
         var list = c.getContents();
         if (list.isEmpty()) return;
         for (var stack : list) {
-            consumer.accept(CraftItemStack.asCraftMirror(stack));
+            consumer.accept(CraftItemStack.asBukkitMirror(stack));
         }
         c.clearContent();
     }
