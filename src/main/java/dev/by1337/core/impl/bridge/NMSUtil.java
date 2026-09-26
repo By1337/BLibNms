@@ -51,7 +51,7 @@ public class NMSUtil {
         } else {
             registryAccess = MinecraftServer.getServer().registryAccess();
         }
-        return CraftItemStack.asCraftMirror(
+        return CraftItemStack.asBukkitMirror(
                 net.minecraft.world.item.ItemStack.CODEC.decode(RegistryOps.create(NbtOps.INSTANCE, registryAccess), tag)
                         .getOrThrow().getFirst()
         );
