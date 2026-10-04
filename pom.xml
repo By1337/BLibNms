@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>dev.by1337.core.nms</groupId>
     <artifactId>BLibNms</artifactId>
-    <version>1.5+1.21.11</version>
+    <version>1.6+1.21.11</version>
 
     <properties>
         <java.version>16</java.version>
@@ -116,6 +116,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.115.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>datafixerupper</artifactId>
             <version>8.0.16</version>
@@ -124,7 +130,7 @@
         <dependency>
             <groupId>dev.by1337.core</groupId>
             <artifactId>BLibV2</artifactId>
-            <version>1.7.1</version>
+            <version>1.8.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
