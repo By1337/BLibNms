@@ -5,6 +5,7 @@ import dev.by1337.core.impl.bridge.command.BukkitCommandRegisterImpl;
 import dev.by1337.core.impl.bridge.entity.EntityWrapperImpl;
 import dev.by1337.core.impl.bridge.inventory.InventoryUtilImpl;
 import dev.by1337.core.impl.bridge.inventory.ItemStackSerializerImpl;
+import dev.by1337.core.impl.bridge.location.LocationBarImpl;
 import dev.by1337.core.impl.bridge.nbt.NbtBridgeImpl;
 import dev.by1337.core.impl.bridge.world.BlockEntityUtilImpl;
 import org.bukkit.Particle;
@@ -21,9 +22,11 @@ public class BridgeBootstrapper {
         BCore.itemStackSerializer = new ItemStackSerializerImpl();
         BCore.nbtBridge = new NbtBridgeImpl();
         BCore.entityWrapperMaker = EntityWrapperImpl::new;
+        BCore.locationBar = new LocationBarImpl();
     }
 
     private static void bootRegistryBridge() {
+
         ((LegacyRegistryBridge.RegistryImpl<Particle>) LegacyRegistryBridge.PARTICLE_TYPE).importData(
                 Registry.PARTICLE_TYPE.iterator(),
                 v -> v,
